@@ -32,5 +32,5 @@ lazy val root =
   (project in file("."))
     .settings(commonSettings: _*)
     .settings(
-      libraryDependencies ++= Seq(circe, logback, logback) ++ http4s,
+      libraryDependencies ++= Seq(circe, logback, logback, specs2) ++ http4s,
     )
