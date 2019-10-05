@@ -3,7 +3,7 @@
 This project is an example of how to integrate a ScalaJS / Outwatch module into a multi modules Http4s app, 
 which use ZIO as its IO monad implementation, and serve the compiled assets with the Http4s server.
 
-If you want to see how I serve the assets, just take a look at the `FrontendRouter` code.
+If you want to see how I serve the assets, just take a look at the `com.example.http4sziooutwatchscalajs.backend.FrontendRouter` code.
 
 ## Goals
 
