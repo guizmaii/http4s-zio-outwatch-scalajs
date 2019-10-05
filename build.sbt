@@ -54,7 +54,8 @@ lazy val backend =
        */
       scalaJSProjects := Seq(frontend),
       Assets / pipelineStages := Seq(scalaJSPipeline),
-      // The two following setings change how and where the `sbt-web-scalajs-bundler` plugin produces the assets sources.
+      // -- Hack n°0 --
+      // The two following settings change how and where the `sbt-web-scalajs-bundler` plugin produces the assets sources.
       // The default behavior is to produce a WebJar directory hierarchy.
       // It's problematic because this hierarchy contains the name and version of the project and
       // that's not easy to reference in our Http4s router we'll use to serve the assets.
@@ -67,7 +68,7 @@ lazy val backend =
       ),
       // The project compilation will trigger the ScalaJS compilation
       Compile / compile := ((Compile / compile) dependsOn scalaJSPipeline).value,
-      // The `scalaJSPipeline` tends to be called to often with the prod mode ("fullOpt"), especially when using the Intellij sbt console.
+      // The `scalaJSPipeline` tends to be called too often with the prod mode ("fullOpt"), especially when using the Intellij sbt console.
       scalaJSPipeline / devCommands ++=
         Seq("~reStart", "~compile", "~test:compile", "set", "session", "*/*:dumpStructureTo")
     )
