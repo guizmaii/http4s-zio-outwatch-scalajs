@@ -21,7 +21,7 @@ This project can be compiled to be put in production, as is.
 
  - Use the less possible hand crafted code.
 
-less ad-hoc solution = Less code = less maintenance = less bug
+Less ad-hoc solution = less code = less maintenance = less bug
 
  - Document each step
 
