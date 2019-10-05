@@ -13,7 +13,7 @@ The only "hack" in the ScalaJS config is that I modify the generated directory h
 For more details, see the comment flaggued as `-- Hack n°0 --` in the `build.sbt` file.
 
 The ScalaJS sbt settings in the frontend module come from the generated Outwatch app. I didn't invented anything.
-Just removed the one I don't need, as the Webpack ones for example.
+Just removed the ones I don't need, as the Webpack ones for example.
 
  - Propose the simpler example possible, yet the more complete possible.
 
