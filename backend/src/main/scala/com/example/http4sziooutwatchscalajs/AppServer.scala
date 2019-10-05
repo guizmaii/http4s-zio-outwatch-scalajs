@@ -10,7 +10,7 @@ import org.http4s.server.middleware.Logger
 
 import scala.concurrent.ExecutionContext.global
 
-object Http4sziooutwatchscalajsServer {
+object AppServer {
 
   def stream[F[_]: ConcurrentEffect](implicit T: Timer[F]): Stream[F, Nothing] = {
     for {
@@ -23,8 +23,8 @@ object Http4sziooutwatchscalajsServer {
       // want to extract a segments not checked
       // in the underlying routes.
       httpApp = (
-        Http4sziooutwatchscalajsRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
-        Http4sziooutwatchscalajsRoutes.jokeRoutes[F](jokeAlg)
+        AppRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
+        AppRoutes.jokeRoutes[F](jokeAlg)
       ).orNotFound
 
       // With Middlewares in place
