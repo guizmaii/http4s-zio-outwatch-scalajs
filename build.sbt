@@ -39,7 +39,7 @@ lazy val root =
 
 lazy val backend =
   project
-    .enablePlugins(WebScalaJSBundlerPlugin, BuildEnvPlugin)
+    .enablePlugins(WebScalaJSBundlerPlugin, BuildEnvPlugin, JavaAppPackaging)
     .settings(commonSettings: _*)
     .settings(Revolver.enableDebugging(port = 5005, suspend = false)) // Activate debugging with the `reStart` command. Because it's handy. :)
     .settings(
