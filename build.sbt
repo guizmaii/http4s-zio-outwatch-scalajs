@@ -33,12 +33,33 @@ val commonSettings = Seq(
 lazy val root =
   (project in file("."))
     .disablePlugins(RevolverPlugin)
-    .aggregate(backend)
-    .dependsOn(backend)
+    .aggregate(backend, frontend)
+    .dependsOn(backend, frontend)
 
 lazy val backend =
   project
     .settings(commonSettings: _*)
     .settings(
       // scalacOptions := scalacOptions.value.filter(_ != "-Xfatal-warnings"),
+    )
+
+lazy val frontend =
+  project
+    .enablePlugins(ScalaJSBundlerPlugin)
+    .settings(
+      resolvers += "jitpack" at "https://jitpack.io",
+      libraryDependencies ++= Seq(
+        "com.github.outwatch.outwatch" %%% "outwatch"  % "a332851",
+        "org.scalatest"                %%% "scalatest" % "3.0.8" % Test
+      )
+    )
+    .settings(
+      scalacOptions += "-P:scalajs:sjsDefinedByDefault",
+      useYarn := true, // makes scalajs-bundler use yarn instead of npm
+      requireJsDomEnv in Test := true,
+      scalaJSUseMainModuleInitializer := true,
+      // configure Scala.js to emit a JavaScript module instead of a top-level script
+      scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)),
+      // https://scalacenter.github.io/scalajs-bundler/cookbook.html#performance
+      webpackBundlingMode in fastOptJS := BundlingMode.LibraryOnly()
     )
