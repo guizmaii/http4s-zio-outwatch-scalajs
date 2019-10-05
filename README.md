@@ -47,7 +47,7 @@ Then to launch your app, in a *bash console*:
  
 Feel free to:
  - talk to me on Twitter 
- - open open an issue
+ - open an issue
  - propose a PR 
  
 I'm minimalist here because I think that the code talk to himself, but I can be wrong.
@@ -56,7 +56,7 @@ I'm minimalist here because I think that the code talk to himself, but I can be 
 
 Feel free to:
  - talk to me on Twitter 
- - open open an issue
+ - open an issue
  - propose a PR 
  
  🙂
