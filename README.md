@@ -43,7 +43,7 @@ Then to launch your app, in a *bash console*:
 
 `$ ./backend/target/universal/stage/bin/backend`
 
-You can find more info of how I manage the envs in the `project/BuildEnvPlugin.scala` file.
+You can find more info about how I manage the envs in the `project/BuildEnvPlugin.scala` file.
 
 ## You think that this README can be improved ?
  
