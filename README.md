@@ -54,7 +54,7 @@ Feel free to:
  - open an issue
  - propose a PR 
  
-I'm minimalist here because I think that the code talk to himself, but I can be wrong.
+I'm minimalist here because I think that the code talk for himself, but I can be wrong.
 
 ## Have an idea to improve this example ?
 
