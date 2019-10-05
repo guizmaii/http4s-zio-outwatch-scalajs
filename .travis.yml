@@ -1,0 +1,16 @@
+sudo: false
+language: scala
+scala:
+  - 2.13.1
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport
+jdk:
+  - openjdk8
+  - openjdk11
+
+# Comes from: https://github.com/http4s/http4s/blob/master/.travis.yml#L109
+cache:
+  directories:
+    - "$HOME/.cache"
+    - "$HOME/.ivy2/cache"
+    - "$HOME/.sbt/boot"
