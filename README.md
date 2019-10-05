@@ -1,5 +1,7 @@
 # http4s-zio-outwatch-scalajs
 
+[![Build Status](https://travis-ci.com/guizmaii/http4s-zio-outwatch-scalajs.svg?branch=master)](https://travis-ci.com/guizmaii/http4s-zio-outwatch-scalajs)
+
 This project is an example of how to integrate a ScalaJS / Outwatch module into a multi modules Http4s app, 
 which use ZIO as its IO monad implementation, and serve the compiled assets with the Http4s server.
 
