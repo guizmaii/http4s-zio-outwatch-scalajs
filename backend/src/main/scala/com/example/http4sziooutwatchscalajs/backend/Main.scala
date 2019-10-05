@@ -13,9 +13,11 @@ final case class Config(env: String)
 
 sealed trait Env extends Product with Serializable
 object Env {
-  final case class Prod(subenv: String) extends Env
-  case object Dev                       extends Env
-  case object Test                      extends Env
+  case object Dev  extends Env
+  case object Test extends Env
+  final case class Prod(subenv: String) extends Env {
+    override def toString: String = s"""Prod(subenv: "$subenv")"""
+  }
 }
 
 object Main extends App {
@@ -72,8 +74,7 @@ object Main extends App {
     for {
       cfg                                         <- config
       env                                         <- env(cfg).pure[Task]
-      _                                           <- console.putStrLn(s"========= Loaded ENV: ${cfg.env} ===========")
-      _                                           <- console.putStrLn(s"=========    App ENV: $env       ===========")
+      _                                           <- console.putStrLn(s"========= App ENV: $env ===========")
       implicit0(runtime: Runtime[AppEnvironment]) <- ZIO.runtime[Environment]
       implicit0(blocker: Blocker)                 <- blocker
       server <- BlazeServerBuilder[AppTask]
