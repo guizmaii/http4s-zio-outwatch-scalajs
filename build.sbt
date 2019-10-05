@@ -6,8 +6,8 @@ ThisBuild / scalaVersion := "2.13.1"
 // #### Dependencies ####
 
 val circe   = "io.circe"       %% "circe-generic"  % "0.12.1"
-val specs2  = "org.specs2"     %% "specs2-core"    % "4.7.1" % Test
 val logback = "ch.qos.logback" % "logback-classic" % "1.2.3"
+val specs2  = "org.specs2"     %% "specs2-core"    % "4.7.1" % Test
 
 val http4s = (
   (version: String) =>
