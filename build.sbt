@@ -30,6 +30,12 @@ val commonSettings = Seq(
 
 lazy val root =
   (project in file("."))
+    .disablePlugins(RevolverPlugin)
+    .aggregate(backend)
+    .dependsOn(backend)
+
+lazy val backend =
+  project
     .settings(commonSettings: _*)
     .settings(
       libraryDependencies ++= Seq(circe, logback, logback, specs2) ++ http4s,
