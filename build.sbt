@@ -1,7 +1,8 @@
 ThisBuild / organization := "com.example"
 ThisBuild / name := "http4s-zio-outwatch-scalajs"
 ThisBuild / version := "0.0.1-SNAPSHOT"
-ThisBuild / scalaVersion := "2.13.1"
+// ThisBuild / scalaVersion := "2.13.1" // Can't use Scala 2.13 for now because of https://github.com/scala/bug/issues/11457
+ThisBuild / scalaVersion := "2.12.10"
 
 // #### Dependencies ####
 
@@ -38,14 +39,42 @@ lazy val root =
 
 lazy val backend =
   project
+    .enablePlugins(WebScalaJSBundlerPlugin)
     .settings(commonSettings: _*)
+    .settings(Revolver.enableDebugging(port = 5005, suspend = false)) // Activate debugging with the `reStart` command. Because it's handy. :)
     .settings(
       // scalacOptions := scalacOptions.value.filter(_ != "-Xfatal-warnings"),
+    )
+    .settings(
+      /*
+          #### Frontend related settings ####
+
+          See: https://scalacenter.github.io/scalajs-bundler/getting-started.html#sbt-web
+       */
+      scalaJSProjects := Seq(frontend),
+      Assets / pipelineStages := Seq(scalaJSPipeline),
+      // The two following setings change how and where the `sbt-web-scalajs-bundler` plugin produces the assets sources.
+      // The default behavior is to produce a WebJar directory hierarchy.
+      // It's problematic because this hierarchy contains the name and version of the project and
+      // that's not easy to reference in our Http4s router we'll use to serve the assets.
+      // So, we simplify the directory hierachy.
+      // Everything will be in a "public" dir, accessible via the project resources.
+      Assets / WebKeys.packagePrefix := "public/",
+      Assets / WebKeys.exportedMappings := (
+        for ((file, path) <- (Assets / mappings).value)
+          yield file -> ((Assets / WebKeys.packagePrefix).value + path)
+      ),
+      // The project compilation will trigger the ScalaJS compilation
+      Compile / compile := ((Compile / compile) dependsOn scalaJSPipeline).value,
+      // The `scalaJSPipeline` tends to be called to often with the prod mode ("fullOpt"), especially when using the Intellij sbt console.
+      scalaJSPipeline / devCommands ++=
+        Seq("~reStart", "~compile", "~test:compile", "set", "session", "*/*:dumpStructureTo")
     )
 
 lazy val frontend =
   project
     .enablePlugins(ScalaJSBundlerPlugin)
+    .disablePlugins(RevolverPlugin)
     .settings(
       resolvers += "jitpack" at "https://jitpack.io",
       libraryDependencies ++= Seq(

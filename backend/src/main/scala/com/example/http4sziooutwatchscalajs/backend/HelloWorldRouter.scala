@@ -1,4 +1,4 @@
-package com.example.http4sziooutwatchscalajs
+package com.example.http4sziooutwatchscalajs.backend
 
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl

@@ -1,4 +1,4 @@
-package frontend
+package com.example.http4sziooutwatchscalajs.backend.frontend
 
 import outwatch.dom._
 import outwatch.dom.dsl._

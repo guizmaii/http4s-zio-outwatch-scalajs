@@ -1,10 +1,10 @@
-package frontend
+package com.example.http4sziooutwatchscalajs.backend.frontend
 
-import org.scalatest._
-import org.scalajs.dom._
 import monix.execution.ExecutionModel.SynchronousExecution
+import monix.execution.Scheduler
 import monix.execution.schedulers.TrampolineScheduler
-import monix.execution.{Cancelable, Scheduler}
+import org.scalajs.dom._
+import org.scalatest._
 
 abstract class JSDomSpec extends FlatSpec with Matchers with BeforeAndAfterEach {
 

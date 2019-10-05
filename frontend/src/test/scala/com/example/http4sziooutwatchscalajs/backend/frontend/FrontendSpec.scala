@@ -1,10 +1,8 @@
-package frontend
+package com.example.http4sziooutwatchscalajs.backend.frontend
 
-import org.scalatest._
 import org.scalajs.dom._
 import outwatch.dom._
 import outwatch.dom.dsl._
-import monix.execution.Scheduler.Implicits.global
 
 class FrontendSpec extends JSDomSpec {
 

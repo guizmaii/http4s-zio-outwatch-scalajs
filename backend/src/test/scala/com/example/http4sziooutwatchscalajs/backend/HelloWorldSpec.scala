@@ -1,4 +1,4 @@
-package com.example.http4sziooutwatchscalajs
+package com.example.http4sziooutwatchscalajs.backend
 
 import org.http4s._
 import org.specs2.matcher.MatchResult
