@@ -12,6 +12,9 @@ If you want to see how I serve the assets, just take a look at the `com.example.
 The only "hack" in the ScalaJS config is that I modify the generated directory hierachy of the ScalaJS app.
 For more details, see the comment flaggued as `-- Hack n°0 --` in the `build.sbt` file.
 
+The ScalaJS sbt settings in the frontend module comes from the generated Outwatch app. I invented nothing.
+Just removed the one I don't need, as the Webpack ones for example.
+
  - Propose the simpler example possible, yet the more complete possible.
 
 This project can be compiled to be put in production, as is.
@@ -57,6 +60,15 @@ Feel free to:
  - propose a PR 
  
  🙂
+ 
+ 
+## Sources
+
+ - https://http4s.org/
+ - https://outwatch.github.io/?lang=scala
+ - https://scalacenter.github.io/scalajs-bundler/
+ - https://github.com/ChristopherDavenport/http4s-scalajsexample
+
 
 
 Have fun!
