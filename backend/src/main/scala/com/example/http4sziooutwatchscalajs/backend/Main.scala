@@ -4,15 +4,18 @@ import cats.effect.{ Blocker, Concurrent, ExitCode }
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.Logger
 import org.http4s.{ HttpApp, HttpRoutes }
+import pureconfig.{ ConfigReader, ConfigSource, Exported }
 import zio.blocking.Blocking
 import zio.console.putStrLn
 import zio.{ App, RIO, Runtime, Task, ZIO }
 
+final case class Config(env: String)
+
 sealed trait Env extends Product with Serializable
 object Env {
-  case object Prod extends Env
-  case object Dev  extends Env
-  case object Test extends Env
+  final case class Prod(subenv: String) extends Env
+  case object Dev                       extends Env
+  case object Test                      extends Env
 }
 
 object Main extends App {
@@ -22,6 +25,39 @@ object Main extends App {
 
   type AppEnvironment = Environment
   type AppTask[A]     = RIO[AppEnvironment, A]
+
+  /*
+   * Ok. I'm not proud of this solution but it's simple.
+   *
+   * If you have a better solution to propose, I'm ready to listen you :)
+   */
+  private def env(cfg: Config): Env =
+    cfg.env match {
+      case "production" | "staging" => Env.Prod(cfg.env)
+      case "dev"                    => Env.Dev
+      case "test"                   => Env.Test
+    }
+
+  /*
+   * Here, I need the `.absorbWith` because the pureconfig error channel contains a case class which doesn't herit from a Throwable.
+   *
+   * I don't know how to fix the compilation without this hack. 😕
+   */
+  private val config: ZIO[Any, Throwable, Config] = {
+    import pureconfig.generic.auto._
+    implicitly[Exported[ConfigReader[Config]]] // ⚠️ Without, Intellij removes `pureconfig.generic.auto._` import...
+
+    ZIO
+      .fromEither(ConfigSource.default.load[Config])
+      .absorbWith(error => new RuntimeException(error.toString))
+  }
+
+  private val blocker: ZIO[Blocking, Nothing, Blocker] =
+    ZIO
+      .environment[Blocking]
+      .flatMap(_.blocking.blockingExecutor)
+      .map(_.asEC)
+      .map(Blocker.liftExecutionContext)
 
   private def logged[F[_]: Concurrent](httpRoutes: HttpRoutes[F]): HttpRoutes[F] =
     Logger.httpRoutes(logHeaders = true, logBody = true)(httpRoutes)
@@ -34,17 +70,12 @@ object Main extends App {
 
   private def server: ZIO[AppEnvironment, Throwable, Unit] =
     for {
+      cfg                                         <- config
+      env                                         <- env(cfg).pure[Task]
+      _                                           <- console.putStrLn(s"========= Loaded ENV: ${cfg.env} ===========")
+      _                                           <- console.putStrLn(s"=========    App ENV: $env       ===========")
       implicit0(runtime: Runtime[AppEnvironment]) <- ZIO.runtime[Environment]
-      implicit0(env: Env) <- ("dev" match { // TODO Jules
-                              case "production" | "staging" => Env.Prod
-                              case "dev"                    => Env.Dev
-                              case "test"                   => Env.Test
-                            }).pure[Task]
-      implicit0(blocker: Blocker) <- ZIO
-                                      .environment[Blocking]
-                                      .flatMap(_.blocking.blockingExecutor)
-                                      .map(_.asEC)
-                                      .map(Blocker.liftExecutionContext)
+      implicit0(blocker: Blocker)                 <- blocker
       server <- BlazeServerBuilder[AppTask]
                  .bindHttp(8080, "0.0.0.0")
                  .withHttpApp(app(env))

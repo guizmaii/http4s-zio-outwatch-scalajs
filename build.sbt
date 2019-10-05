@@ -6,10 +6,11 @@ ThisBuild / scalaVersion := "2.12.10"
 
 // #### Dependencies ####
 
-val logback            = "ch.qos.logback" % "logback-classic"   % "1.2.3"
-val zio                = "dev.zio"        %% "zio"              % "1.0.0-RC13"
-val `zio-cats-interop` = "dev.zio"        %% "zio-interop-cats" % "2.0.0.0-RC4"
-val specs2             = "org.specs2"     %% "specs2-core"      % "4.7.1" % Test
+val logback            = "ch.qos.logback"        % "logback-classic"   % "1.2.3"
+val zio                = "dev.zio"               %% "zio"              % "1.0.0-RC13"
+val `zio-cats-interop` = "dev.zio"               %% "zio-interop-cats" % "2.0.0.0-RC4"
+val pureconfig         = "com.github.pureconfig" %% "pureconfig"       % "0.12.1"
+val specs2             = "org.specs2"            %% "specs2-core"      % "4.7.1" % Test
 
 val http4s = (
   (version: String) =>
@@ -25,8 +26,7 @@ val http4s = (
 
 val commonSettings = Seq(
   addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.10.3"),
-  addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1"),
-  libraryDependencies ++= Seq(logback, specs2, zio, `zio-cats-interop`) ++ http4s,
+  addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1")
 )
 
 // #### Projects ####
@@ -44,6 +44,7 @@ lazy val backend =
     .settings(Revolver.enableDebugging(port = 5005, suspend = false)) // Activate debugging with the `reStart` command. Because it's handy. :)
     .settings(
       // scalacOptions := scalacOptions.value.filter(_ != "-Xfatal-warnings"),
+      libraryDependencies ++= Seq(logback, specs2, zio, `zio-cats-interop`, pureconfig) ++ http4s,
     )
     .settings(
       /*
@@ -75,6 +76,7 @@ lazy val frontend =
   project
     .enablePlugins(ScalaJSBundlerPlugin)
     .disablePlugins(RevolverPlugin)
+    .settings(commonSettings: _*)
     .settings(
       resolvers += "jitpack" at "https://jitpack.io",
       libraryDependencies ++= Seq(

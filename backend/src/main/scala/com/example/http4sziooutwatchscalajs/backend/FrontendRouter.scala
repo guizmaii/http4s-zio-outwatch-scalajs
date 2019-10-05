@@ -12,14 +12,16 @@ object FrontendRouter {
   private final val indexHeaders: Headers = Headers.of(`Content-Type`(MediaType.text.html, Charset.`UTF-8`))
 
   private final def scripts(env: Env): String =
-    if (env == Env.Prod)
-      s"""<script type="text/javascript" src="$assetsDir/frontend-opt-bundle.js"></script>"""
-    else
-      s"""
-         |<script type="text/javascript" src="$assetsDir/frontend-fastopt-library.js"></script>
-         |<script type="text/javascript" src="$assetsDir/frontend-fastopt-loader.js"></script>
-         |<script type="text/javascript" src="$assetsDir/frontend-fastopt.js"></script>
-         |""".stripMargin
+    env match {
+      case Env.Prod(_) =>
+        s"""<script type="text/javascript" src="$assetsDir/frontend-opt-bundle.js"></script>"""
+      case _ =>
+        s"""
+           |<script type="text/javascript" src="$assetsDir/frontend-fastopt-library.js"></script>
+           |<script type="text/javascript" src="$assetsDir/frontend-fastopt-loader.js"></script>
+           |<script type="text/javascript" src="$assetsDir/frontend-fastopt.js"></script>
+           |""".stripMargin
+    }
 
   private final def html(env: Env): String =
     s"""
