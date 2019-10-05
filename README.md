@@ -5,7 +5,7 @@ which use ZIO as its IO monad implementation, and serve the compiled assets with
 
 If you want to see how I serve the assets, just take a look at the `FrontendRouter` code.
 
-### Goals
+## Goals
 
  - Use the less possible hand crafted sbt configs to configure the sbt project.
 
@@ -24,13 +24,13 @@ less ad-hoc solution = Less code = less maintenance = less bug
 
 I took care that each commit is as atomic as possible so if you want to follow how I did everything, just look at the commits.
 
-### Run in dev mode (with hot reload of both Scala and ScalaJS code)
+## Run in dev mode (with hot reload of both Scala and ScalaJS code)
 
 In a *sbt console*:
 
 `root> ~reStart`
 
-### Build the app for a given env
+## Build the app for a given env
 
 In a *bash console*:
 
@@ -40,7 +40,7 @@ Then to launch your app, in a *bash console*:
 
 `$ ./backend/target/universal/stage/bin/backend`
 
-### You think that this README can be improved ?
+## You think that this README can be improved ?
  
 Feel free to:
  - talk to me on Twitter 
@@ -49,7 +49,7 @@ Feel free to:
  
 I'm minimalist here because I think that the code talk to himself, but I can be wrong.
 
-### Have an idea to improve this example ?
+## Have an idea to improve this example ?
 
 Feel free to:
  - talk to me on Twitter 
