@@ -83,7 +83,9 @@ lazy val frontend =
       libraryDependencies ++= Seq(
         "com.github.outwatch.outwatch" %%% "outwatch"  % "a332851",
         "org.scalatest"                %%% "scalatest" % "3.0.8" % Test
-      )
+      ),
+      // Example of how to add a NPM dependency to the ScalaJS module.
+      Compile / npmDependencies += "bulma" -> "0.7.5"
     )
     .settings(
       scalacOptions += "-P:scalajs:sjsDefinedByDefault",
