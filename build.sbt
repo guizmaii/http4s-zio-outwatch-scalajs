@@ -7,8 +7,8 @@ ThisBuild / scalaVersion := "2.12.10"
 // #### Dependencies ####
 
 val logback            = "ch.qos.logback"        % "logback-classic"   % "1.2.3"
-val zio                = "dev.zio"               %% "zio"              % "1.0.0-RC14"
-val `zio-cats-interop` = "dev.zio"               %% "zio-interop-cats" % "2.0.0.0-RC4"
+val zio                = "dev.zio"               %% "zio"              % "1.0.0-RC15"
+val `zio-cats-interop` = "dev.zio"               %% "zio-interop-cats" % "2.0.0.0-RC6"
 val pureconfig         = "com.github.pureconfig" %% "pureconfig"       % "0.12.1"
 val specs2             = "org.specs2"            %% "specs2-core"      % "4.7.1" % Test
 

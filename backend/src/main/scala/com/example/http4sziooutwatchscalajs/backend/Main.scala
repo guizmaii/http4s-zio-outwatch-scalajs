@@ -7,7 +7,7 @@ import org.http4s.{ HttpApp, HttpRoutes }
 import pureconfig.{ ConfigReader, ConfigSource, Exported }
 import zio.blocking.Blocking
 import zio.console.putStrLn
-import zio.{ App, RIO, Runtime, Task, ZIO }
+import zio.{ App, RIO, Runtime, Task, ZIO, ZEnv }
 
 final case class Config(env: String)
 
@@ -25,7 +25,7 @@ object Main extends App {
   import org.http4s.implicits._
   import zio.interop.catz._
 
-  type AppEnvironment = Environment
+  type AppEnvironment = ZEnv
   type AppTask[A]     = RIO[AppEnvironment, A]
 
   /*
@@ -75,7 +75,7 @@ object Main extends App {
       cfg                                         <- config
       env                                         <- env(cfg).pure[Task]
       _                                           <- console.putStrLn(s"========= App ENV: $env ===========")
-      implicit0(runtime: Runtime[AppEnvironment]) <- ZIO.runtime[Environment]
+      implicit0(runtime: Runtime[AppEnvironment]) <- ZIO.runtime[ZEnv]
       implicit0(blocker: Blocker)                 <- blocker
       server <- BlazeServerBuilder[AppTask]
                  .bindHttp(8080, "0.0.0.0")
@@ -85,7 +85,7 @@ object Main extends App {
                  .drain
     } yield server
 
-  override def run(args: List[String]): ZIO[Environment, Nothing, Int] =
+  override def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
     server.foldM(err => putStrLn(s"Execution failed with: $err") *> ZIO.succeed(1), _ => ZIO.succeed(0))
 
 }
