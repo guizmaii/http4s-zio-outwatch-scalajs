@@ -87,3 +87,4 @@ project/plugins/project/
 *.class
 *.log
 .idea/
+yarn.lock
